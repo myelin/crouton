@@ -1,3 +1,25 @@
+# This is not the official version of crouton!
+
+https://github.com/dnschneid/crouton is the official version; this is Phillip
+Pearson's fork. Things I care about:
+
+ * Graphics and gaming; X11, Wayland, Sommelier, Steam.
+ * Debian unstable/testing/stable: sid, bookworm, bullseye
+ * Latest Ubuntu release and LTS: impish, focal
+
+Feel free to send pull requests or file bugs relating to any of the above.
+
+Note that the quick install instructions below won't work, because I don't
+provide built releases. To install this fork, try something like this, changing
+the target and distribution in the last line as appropriate:
+
+ * Open crosh with Ctrl-Alt-T
+ * cd /usr/local
+ * wget https://github.com/myelin/crouton/archive/refs/heads/main.zip
+ * unzip main.zip
+ * cd crouton-main
+ * installer/main.sh -t xrce -r sid -n test-sid
+
 # crouton: Chromium OS Universal Chroot Environment
 
 crouton is a set of scripts that bundle up into an easy-to-use,
