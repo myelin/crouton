@@ -1,0 +1,76 @@
+#!/bin/sh -e
+# Copyright (c) 2016 The crouton Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+REQUIRES='core'
+DESCRIPTION="Support Wayland pass-through to Chrome via Sommelier."
+. "${TARGETSDIR:="$PWD"}/common"
+
+### Append to prepare.sh:
+
+# Fetch Sommelier source
+
+SOMMELIERBUILDTMP="`mktemp -d crouton-sommelier.XXXXXX --tmpdir=/tmp`"
+
+addtrap "rm -rf --one-file-system '$SOMMELIERBUILDTMP'"
+
+SOMMELIER_HEAD="1382ce084cc40790340d672e8b62ec47733cb860"
+
+echo "Fetching Sommelier (branch $SOMMELIER_HEAD)..." 1>&2
+
+archive="$SOMMELIERBUILDTMP/sommelier.tar.gz"
+log="$SOMMELIERBUILDTMP/wget.log"
+urlbase="https://chromium.googlesource.com/chromiumos/containers/sommelier/+archive"
+( wget -O "$archive" "$urlbase/$SOMMELIER_HEAD.tar.gz" 2>&1 \
+  || echo "Error fetching Sommelier" ) | tee "$log"
+if tail -n 1 "$log" | grep -q "^Error"; then
+  # wget already printed an explicit error
+  exit 1
+fi
+
+build_sommelier() {
+
+  # Install Sommelier dependencies
+  # TODO some of these may be build deps, and should use "asdeps"
+  install --minimal debhelper libepoxy-dev libpixman-1-dev libssl-dev \
+      libxfont-dev libxkbfile-dev x11proto-dev xfonts-utils xutils-dev \
+      libbsd-dev libffi-dev libglvnd-dev libx11-dev libx11-xcb-dev \
+      libxcb1-dev libxcb-dri2-0-dev libxcb-dri3-dev libxcb-glx0-dev \
+      libxcb-present-dev libxcb-shm0-dev libxdamage-dev libexpat-dev \
+      libxext-dev libxrandr-dev libxshmfence-dev libxxf86vm-dev libz-dev \
+      llvm-9 wayland-protocols libgl1-mesa-dri libnvidia-egl-wayland-dev \
+      libxcb-xinput-dev libxcb-damage0-dev libxcb-composite0-dev \
+      libxkbcommon-dev mesa-utils xwayland libwayland-bin \
+      libdrm-dev libgbm-dev libgcrypt20-dev libgpg-error-dev libpciaccess-dev \
+      libwayland-dev libxv-dev mesa-common-dev
+  # TODO sort list
+
+  # Start subshell for compilation
+  (
+    cd "$SOMMELIERBUILDTMP"
+
+    # Make sure we start fresh
+    rm -rf --one-file-system sommelier
+
+    # -m prevents "time stamp is in the future" spam
+    tar -tzf sommelier.tar.gz
+    mkdir -p sommelier
+    tar -C sommelier -xmf sommelier.tar.gz
+
+    cd sommelier
+
+    echo "Compiling Sommelier..." 1>&2
+    make
+
+    echo "Installing Sommelier..." 1>&2
+    /usr/bin/install sommelier /usr/local/bin/
+  ) # End compilation subshell
+}
+
+build_sommelier
+
+TIPS="$TIPS
+TODO explain how to use Sommelier
+
+XDG_RUNTIME_DIR=/var/run/chrome sommelier --drm-device=/dev/dri/renderD128 --glamor -X glxinfo -B
+"
