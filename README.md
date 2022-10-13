@@ -18,7 +18,7 @@ the target and distribution in the last line as appropriate:
  * wget https://github.com/myelin/crouton/archive/refs/heads/main.zip
  * unzip main.zip
  * cd crouton-main
- * installer/main.sh -t xrce -r sid -n test-sid
+ * installer/main.sh -t xfce -r sid -n test-sid
 
 # crouton: Chromium OS Universal Chroot Environment
 
