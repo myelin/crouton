@@ -6,10 +6,11 @@ Pearson's fork. Things I care about:
  * Graphics and gaming; X11, Wayland, Sommelier, Steam.
  * Debian unstable/testing/stable: sid, bookworm, bullseye
  * Latest Ubuntu release and LTS: impish, focal
+ * ... but only on current ChromeOS releases, sorry :(
 
 Feel free to send pull requests or file bugs relating to any of the above.
 
-The installer now works!  To install this fork, try the following:
+The installer now works, I think!  To install this fork, try the following:
 
  * Download [https://github.com/myelin/crouton/raw/main/installer/crouton](https://github.com/myelin/crouton/raw/main/installer/crouton)
  * Open crosh with Ctrl-Alt-T
