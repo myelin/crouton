@@ -9,16 +9,15 @@ Pearson's fork. Things I care about:
 
 Feel free to send pull requests or file bugs relating to any of the above.
 
-Note that the quick install instructions below won't work, because I don't
-provide built releases. To install this fork, try something like this, changing
-the target and distribution in the last line as appropriate:
+The installer now works!  To install this fork, try the following:
 
+ * Download [https://github.com/myelin/crouton/raw/main/installer/crouton](https://github.com/myelin/crouton/raw/main/installer/crouton)
  * Open crosh with Ctrl-Alt-T
- * cd /usr/local
- * wget https://github.com/myelin/crouton/archive/refs/heads/main.zip
- * unzip main.zip
- * cd crouton-main
- * installer/main.sh -t xfce -r sid -n test-sid
+ * `shell`
+ * `sudo install -Dt /usr/local/bin -m 755 ~/Downloads/crouton`
+ * `sudo crouton -t xfce -r focal -n test-focal`
+ * `sudo enter-chroot -n test-focal`
+ * `startxfce4`
 
 # crouton: Chromium OS Universal Chroot Environment
 
@@ -151,7 +150,8 @@ crouton is a powerful tool, and there are a *lot* of features, but basic usage
 is as simple as possible by design.
 
 If you're just here to use crouton, you can grab the latest release from
-[https://goo.gl/fd3zc](https://goo.gl/fd3zc). Download it, pop open a shell
+[https://github.com/myelin/crouton/raw/main/installer/crouton](https://github.com/myelin/crouton/raw/main/installer/crouton).
+Download it, pop open a shell
 (Ctrl+Alt+T, type `shell` and hit enter), make the installer executable with
 `sudo install -Dt /usr/local/bin -m 755 ~/Downloads/crouton`, then launch it
 with `sudo crouton` to see the help text. See the "examples" section for some
