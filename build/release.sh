@@ -61,7 +61,7 @@ for bundle in "$@"; do
     fi
     branch="${version#*~}"
     branch="${branch%:*}"
-    dest="${branch#master}"
+    dest="${branch#main}"
     dest="crouton${dest:+-}$dest"
     # Compare the current release to avoid duplicates
     if [ -f "releases/$dest" ] && \

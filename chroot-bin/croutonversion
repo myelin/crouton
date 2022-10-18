@@ -129,8 +129,8 @@ if [ -n "$CHANGES" -a "$VERSION" != "$latest" ]; then
     # Check if changelogs are available from this version / to this branch
     if ! wget "$CHANGESURL$BRANCH" -O/dev/full 2>&1 | grep -q '404 Not Found'; then
         CHANGESURL="$CHANGESURL$BRANCH"
-    elif ! wget "${CHANGESURL}master" -O/dev/full 2>&1 | grep -q '404 Not Found'; then
-        CHANGESURL="${CHANGESURL}master"
+    elif ! wget "${CHANGESURL}main" -O/dev/full 2>&1 | grep -q '404 Not Found'; then
+        CHANGESURL="${CHANGESURL}main"
     else
         # Fall back on the main commit log
         CHANGESURL='https://github.com/myelin/crouton/commits/'
