@@ -1,11 +1,12 @@
 # This is not the official version of crouton!
 
 https://github.com/dnschneid/crouton is the official version; this is Phillip
-Pearson's fork. Things I care about:
+Pearson's fork. I work on the Chrome OS Gaming team at Google, and use this fork
+for game testing. Things I care about:
 
  * Graphics and gaming; X11, Wayland, Sommelier, Steam.
  * Debian unstable/testing/stable: sid, bookworm, bullseye
- * Latest Ubuntu release and LTS: impish, focal
+ * Latest Ubuntu release and LTS: focal, jammy, kinetic
  * ... but only on current ChromeOS releases, sorry :(
 
 Feel free to send pull requests or file bugs relating to any of the above.
@@ -19,6 +20,11 @@ The installer now works, I think!  To install this fork, try the following:
  * `sudo crouton -t xfce -r focal -n test-focal`
  * `sudo enter-chroot -n test-focal`
  * `startxfce4`
+
+Notes from Oct 2022: `startxfce4` brings up an apparently-working UI on focal,
+but fails on sid, jammy, and kinetic.  I haven't tested bookworm or bullseye.
+
+# Upstream README follows...
 
 # crouton: Chromium OS Universal Chroot Environment
 
