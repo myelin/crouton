@@ -102,6 +102,10 @@ EOF
     # Ignore failures, as most are due to bad PPAs and are not critical.
     apt-get -y update || true
 
+    # echo 'Hackily attempting to fix install issues...' 1>&2
+    mount | grep tmp
+    apt -y --fix-broken install
+
     echo 'Ensuring system is up-to-date...' 1>&2
     apt-get -y dist-upgrade
 fi

@@ -348,7 +348,7 @@ fi
 bindmount /dev
 bindmount /dev/pts
 bindmount /dev/shm
-bindmount /tmp /tmp exec
+bindmount /usr/local/tmp /tmp exec
 bindmount /proc
 tmpfsmount /var/run 'noexec,nosuid,mode=0755,size=10%'
 tmpfsmount /var/run/lock 'noexec,nosuid,nodev,size=5120k'

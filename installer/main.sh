@@ -54,7 +54,7 @@ the future. You can use bootstrap tarballs generated this way by passing them
 to -f the next time you create a chroot with the same architecture and release.
 
 $APPLICATION must be run as root unless -d is specified AND fakeroot is
-installed AND /tmp is mounted exec and dev.
+installed AND /usr/local is mounted exec and dev.
 
 It is highly recommended to run this from a crosh shell (Ctrl+Alt+T), not VT2.
 
@@ -330,8 +330,8 @@ if [ -z "$DOWNLOADONLY" ]; then
 fi
 
 # If we're not running as root, we must be downloading and have fakeroot and
-# have an exec and dev /tmp
-if grep -q '.* /tmp .*\(nodev\|noexec\)' /proc/mounts; then
+# have an exec and dev /usr/local
+if grep -q '.* /usr/local .*\(nodev\|noexec\)' /proc/mounts; then
     NOEXECTMP=y
 else
     NOEXECTMP=n
@@ -621,14 +621,14 @@ fi
 # Download the bootstrap data if appropriate
 if [ -z "$UPDATE$RESTOREBIN" ] && [ -n "$DOWNLOADONLY" -o -z "$TARBALL" ]; then
     # Create the temporary directory and delete it upon exit
-    tmp="`mktemp -d --tmpdir=/tmp "$APPLICATION.XXX"`"
+    tmp="`mktemp -d --tmpdir=/usr/local/tmp "$APPLICATION.XXX"`"
     subdir="$RELEASE-$ARCH"
     addtrap "rm -rf --one-file-system '$tmp'"
 
     # Ensure that the temporary directory has exec+dev, or mount a new tmpfs
     if [ "$NOEXECTMP" = 'y' ]; then
-        mount -i -t tmpfs -o 'rw,dev,exec' tmpfs "$tmp"
-        addtrap "umount -l '$tmp'"
+        echo 'Remounting /usr/local exec+dev'
+        mount -o remount,dev /usr/local
     fi
 
     . "$DISTRODIR/bootstrap"
