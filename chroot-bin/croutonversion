@@ -15,10 +15,10 @@ UPDATES=''
 BRANCH="${VERSION##*~}"
 BRANCH="${BRANCH%%:*}"
 COMMIT="${VERSION##*:}"
-CHANGESURL="https://github.com/dnschneid/crouton/compare/$COMMIT..."
+CHANGESURL="https://github.com/myelin/crouton/compare/$COMMIT..."
 INSTALLER="crouton-$BRANCH"
-INSTALLER="${INSTALLER%-master}"
-CROUTONURL="https://github.com/dnschneid/crouton/raw/releases/$INSTALLER"
+INSTALLER="${INSTALLER%-main}"
+CROUTONURL="https://github.com/myelin/crouton/raw/releases/$INSTALLER"
 DEST="$HOME/Downloads/$INSTALLER"
 
 USAGE="$APPLICATION [options]
@@ -133,7 +133,7 @@ if [ -n "$CHANGES" -a "$VERSION" != "$latest" ]; then
         CHANGESURL="${CHANGESURL}master"
     else
         # Fall back on the main commit log
-        CHANGESURL='https://github.com/dnschneid/crouton/commits/'
+        CHANGESURL='https://github.com/myelin/crouton/commits/'
     fi
     # One of these will probably work...
     for x in exo-open gnome-open kde-open xdg-open \
