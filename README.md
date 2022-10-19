@@ -17,12 +17,15 @@ The installer now works, I think!  To install this fork, try the following:
  * Open crosh with Ctrl-Alt-T
  * `shell`
  * `sudo install -Dt /usr/local/bin -m 755 ~/Downloads/crouton`
- * `sudo crouton -t xfce -r focal -n test-focal`
- * `sudo enter-chroot -n test-focal`
+ * `sudo crouton -t xfce -r bullseye -n test-bullseye`
+ * `sudo enter-chroot -n test-bullseye`
  * `startxfce4`
 
-Notes from Oct 2022: `startxfce4` brings up an apparently-working UI on focal,
-but fails on sid, jammy, and kinetic.  I haven't tested bookworm or bullseye.
+Testing notes from Oct 2022:
+ * `startxfce4` brings up an apparently-working UI on bullseye.
+ * `startxfce4` looks similar on focal but the display is laggy and flickers.
+ * `startxfce4` fails on sid, jammy, and kinetic.
+ * I haven't tested bookworm.
 
 # Upstream README follows...
 
