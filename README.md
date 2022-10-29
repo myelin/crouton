@@ -12,7 +12,6 @@ for game testing. Things I care about:
 Feel free to send pull requests or file bugs relating to any of the above.
 
 The installer now works, I think!  To install this fork, try the following:
-
  * Download [https://github.com/myelin/crouton/raw/main/installer/crouton](https://github.com/myelin/crouton/raw/main/installer/crouton)
  * Open crosh with Ctrl-Alt-T
  * `shell`
@@ -20,6 +19,9 @@ The installer now works, I think!  To install this fork, try the following:
  * `sudo crouton -t xfce -r bullseye -n test-bullseye`
  * `sudo enter-chroot -n test-bullseye`
  * `startxfce4`
+
+If you're doing this to test games, use the `steam` target instead of `xfce`:
+ * `sudo crouton -t steam -r bullseye -n test-bullseye`
 
 Testing notes from Oct 2022:
  * `startxfce4` brings up an apparently-working UI on bullseye.

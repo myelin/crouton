@@ -1,0 +1,46 @@
+#!/bin/sh -e
+# Copyright (c) 2016 The crouton Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+REQUIRES='xfce'
+DESCRIPTION="Valve's Steam game store and launcher."
+. "${TARGETSDIR:="$PWD"}/common"
+
+### Append to prepare.sh:
+
+install_steam() {
+
+  # Auto-accept the license
+  echo steam steam/license note '' | debconf-set-selections
+  echo steam steam/question select 'I AGREE' | debconf-set-selections
+
+  # Install Steam and dependencies.
+  # This works on bullseye; YMMV anywhere else.
+  apt -y install bubblewrap steam
+
+  if [ -f /etc/lsb-release ]; then
+    if grep -q ubuntu /etc/lsb-release; then
+      # On focal we need:
+      apt -y install libc6:amd64 libc6:i386 \
+        libegl1:amd64 libegl1:i386 \
+        libgbm1:amd64 libgbm1:i386 \
+        libgl1-mesa-dri:amd64 libgl1-mesa-dri:i386 \
+        libgl1:amd64 libgl1:i386 \
+        steam-libs-amd64:amd64 steam-libs-i386:i386 \
+        xdg-desktop-portal xdg-desktop-portal-gtk
+    fi
+  fi
+
+  # Make bubblewrap suid, so it can run inside a chroot.
+  chmod u+s /usr/bin/bwrap
+
+  # Bump the max open file descriptor limit.
+  echo "* hard nofile 1048576" >> /etc/security/limits.conf
+
+}
+
+install_steam
+
+TIPS="$TIPS
+If running Steam brings up an empty black window, try: steam -no-cef-sandbox
+"
