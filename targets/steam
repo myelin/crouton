@@ -10,6 +10,10 @@ DESCRIPTION="Valve's Steam game store and launcher."
 
 install_steam() {
 
+  # Add the i386 architecture, as Steam is 32-bit.
+  dpkg --add-architecture i386
+  apt update
+
   # Auto-accept the license
   echo steam steam/license note '' | debconf-set-selections
   echo steam steam/question select 'I AGREE' | debconf-set-selections
