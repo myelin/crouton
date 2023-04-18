@@ -2,6 +2,7 @@
 *.tar.*
 .*.swp
 .*.tmp
+.vscode
 nacl_sdk/
 /crouton*
 /test/run
