@@ -60,6 +60,11 @@ fi
 # Build CRAS ALSA plugin for the given architecture ($1)
 # A blank parameter means we are building for the native architecture.
 build_cras() {
+    # TODO(myelin/crouton#1) Fix CRAS build.
+    echo "Skip building CRAS for now, as it fails to build."
+    echo "Bug: https://github.com/myelin/crouton/issues/1"
+    return 0
+
     local cras_arch="$1"
     local pkgsuffix=''
     local pkgdepextra=''
