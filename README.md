@@ -21,10 +21,13 @@ The installer now works, I think!  To install this fork, try the following:
  * `startxfce4`
 
 If you're doing this to test games, use the `steam` target instead of `xfce`:
- * `sudo crouton -t steam -r bullseye -n test-bullseye`
+ * `sudo crouton -t steam,sommelier -r bullseye -n test-bullseye`
+
+Testing notes from June 2023:
+ * `startxfce4` brings up an apparently-working UI on bullseye.
+ * Try the nested compositor with `sommelier --display=/run/chrome/wayland-0 --noop-driver --force-drm-device=/dev/dri/renderD128 -X --glamor -- /bin/bash`
 
 Testing notes from Oct 2022:
- * `startxfce4` brings up an apparently-working UI on bullseye.
  * `startxfce4` looks similar on focal but the display is laggy and flickers.
  * `startxfce4` fails on sid, jammy, and kinetic.
  * I haven't tested bookworm.

@@ -10,23 +10,13 @@ DESCRIPTION="Support Wayland pass-through to Chrome via Sommelier."
 
 # Fetch Sommelier source
 
-SOMMELIERBUILDTMP="`mktemp -d crouton-sommelier.XXXXXX --tmpdir=/tmp`"
+install --minimal git
 
+SOMMELIERBUILDTMP="`mktemp -d crouton-sommelier.XXXXXX --tmpdir=/tmp`"
 addtrap "rm -rf --one-file-system '$SOMMELIERBUILDTMP'"
 
-SOMMELIER_HEAD="1382ce084cc40790340d672e8b62ec47733cb860"
-
-echo "Fetching Sommelier (branch $SOMMELIER_HEAD)..." 1>&2
-
-archive="$SOMMELIERBUILDTMP/sommelier.tar.gz"
-log="$SOMMELIERBUILDTMP/wget.log"
-urlbase="https://chromium.googlesource.com/chromiumos/containers/sommelier/+archive"
-( wget -O "$archive" "$urlbase/$SOMMELIER_HEAD.tar.gz" 2>&1 \
-  || echo "Error fetching Sommelier" ) | tee "$log"
-if tail -n 1 "$log" | grep -q "^Error"; then
-  # wget already printed an explicit error
-  exit 1
-fi
+cd "$SOMMELIERBUILDTMP"
+git clone --depth 1 https://chromium.googlesource.com/chromiumos/platform2
 
 build_sommelier() {
 
@@ -42,35 +32,42 @@ build_sommelier() {
       libxcb-xinput-dev libxcb-damage0-dev libxcb-composite0-dev \
       libxkbcommon-dev mesa-utils xwayland libwayland-bin \
       libdrm-dev libgbm-dev libgcrypt20-dev libgpg-error-dev libpciaccess-dev \
-      libwayland-dev libxv-dev mesa-common-dev
+      libwayland-dev libxv-dev mesa-common-dev meson ninja-build \
+      pkg-config cmake python3-jinja2 libevdev-dev libgtest-dev
   # TODO sort list
 
   # Start subshell for compilation
   (
     cd "$SOMMELIERBUILDTMP"
 
-    # Make sure we start fresh
-    rm -rf --one-file-system sommelier
-
-    # -m prevents "time stamp is in the future" spam
-    tar -tzf sommelier.tar.gz
-    mkdir -p sommelier
-    tar -C sommelier -xmf sommelier.tar.gz
-
-    cd sommelier
-
-    echo "Compiling Sommelier..." 1>&2
-    make
+    cd platform2/vm_tools/sommelier
+    meson setup . _build \
+        -Dgamepad=true \
+        -Dcommit_loop_fix=true \
+        -Dblack_screen_fix=true \
+        -Dxwayland_path=/usr/bin/Xwayland \
+        -Dxwayland_gl_driver_path=/usr/lib/x86_64-linux-gnu/dri
+    meson configure _build
+    ninja -C _build
 
     echo "Installing Sommelier..." 1>&2
-    /usr/bin/install sommelier /usr/local/bin/
+    /usr/bin/install _build/sommelier /usr/local/bin/
   ) # End compilation subshell
 }
 
 build_sommelier
 
 TIPS="$TIPS
-TODO explain how to use Sommelier
+Test sommelier by running glxinfo -B like this; it should show you the system's accelerated driver.
+Replace glxinfo -B below with /bin/bash to get a shell with \$DISPLAY set properly, then try
+something like steam -no-cef-sandbox.
 
-XDG_RUNTIME_DIR=/var/run/chrome sommelier --drm-device=/dev/dri/renderD128 --glamor -X glxinfo -B
+sommelier \\
+    --display=/run/chrome/wayland-0 \\
+    --noop-driver \\
+    --force-drm-device=/dev/dri/renderD128 \\
+    -X \\
+    --glamor \\
+    -- \\
+    glxinfo -B
 "
